@@ -1,9 +1,6 @@
 package com.hezb.controller;
 
-import com.hezb.model.CommonResponse;
-import com.hezb.model.QueryUserResponse;
-import com.hezb.model.RegisterUserRequest;
-import com.hezb.model.UserLoginRequest;
+import com.hezb.model.*;
 import com.hezb.service.UserService;
 import com.hezb.support.UserSupport;
 import com.hezb.util.RSAUtil;
@@ -42,5 +39,11 @@ public class UserController {
     public CommonResponse<QueryUserResponse> getUserInfo() {
         Long userId = userSupport.getCurrentUserId();
         return CommonResponse.success(userService.getUserInfo(userId));
+    }
+
+    @PostMapping("/updateUserInfo")
+    public CommonResponse<Integer> updateUserInfo(@RequestBody @Valid UserInfoUpdateRequest request) {
+        Long userId = userSupport.getCurrentUserId();
+        return CommonResponse.success(userService.updateUserInfo(userId, request));
     }
 }

@@ -10,6 +10,7 @@ import com.hezb.mapper.UserInfoMapper;
 import com.hezb.mapper.UserMapper;
 import com.hezb.model.QueryUserResponse;
 import com.hezb.model.RegisterUserRequest;
+import com.hezb.model.UserInfoUpdateRequest;
 import com.hezb.model.UserLoginRequest;
 import com.hezb.util.MD5Util;
 import com.hezb.util.RSAUtil;
@@ -79,9 +80,20 @@ public class UserService {
         /*根据用户编号查询用户详情信息*/
         List<UserInfo> userInfoList = userInfoMapper.selectList(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userId));
         Optional<UserInfo> optionalUserInfo = userInfoList.stream().findFirst();
-        if (optionalUserInfo.isPresent()){
+        if (optionalUserInfo.isPresent()) {
             BeanUtils.copyProperties(optionalUserInfo.get(), userResponse);
         }
         return userResponse;
+    }
+
+    public int updateUserInfo(Long userId, UserInfoUpdateRequest request) {
+        /*根据用户编号更新用户详情信息*/
+        return userInfoMapper.update(null, Wrappers.<UserInfo>lambdaUpdate().eq(UserInfo::getUserId, userId)
+                .set(StringUtils.isNotBlank(request.getNickName()), UserInfo::getNickName, request.getNickName())
+                .set(StringUtils.isNotBlank(request.getAvatar()), UserInfo::getAvatar, request.getAvatar())
+                .set(StringUtils.isNotBlank(request.getSign()), UserInfo::getSign, request.getSign())
+                .set(StringUtils.isNotBlank(request.getGender()), UserInfo::getGender, request.getGender())
+                .set(StringUtils.isNotBlank(request.getBirth()), UserInfo::getBirth, request.getBirth())
+                .set(UserInfo::getUpdateTime, new Date()));
     }
 }
