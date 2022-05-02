@@ -9,7 +9,27 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoUpdateRequest {
+public class FollowUserInfo {
+
+    /**
+     * 分组名称
+     */
+    private String groupName;
+
+    /**
+     * 用户编号
+     */
+    private Long userId;
+
+    /**
+     * 注册手机号码
+     */
+    private String phone;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     /**
      * 昵称

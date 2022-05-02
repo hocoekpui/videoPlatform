@@ -1,6 +1,5 @@
 package com.hezb.handler;
 
-
 import com.hezb.exception.CustomizeException;
 import com.hezb.exception.enums.BaseExceptionEnum;
 import com.hezb.model.CommonResponse;
@@ -41,13 +40,14 @@ public class CommonGlobalExceptionHandler {
 
     @ExceptionHandler(value = CustomizeException.class)
     @ResponseBody
-    public CommonResponse<String> commonExceptionHandler(CustomizeException customizeException) {
-        return CommonResponse.fail(customizeException.getErrorCode(), customizeException.getErrorMessage());
+    public CommonResponse<String> commonExceptionHandler(CustomizeException e) {
+        return CommonResponse.fail(e.getErrorCode(), e.getErrorMessage());
     }
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public CommonResponse<String> exceptionHandler(Exception ex) {
-        return CommonResponse.fail(BaseExceptionEnum.FAIL.getErrorCode(), ex.getMessage());
+    public CommonResponse<String> exceptionHandler(Exception e) {
+        e.printStackTrace();
+        return CommonResponse.fail(BaseExceptionEnum.FAIL.getErrorCode(), e.getMessage());
     }
 }

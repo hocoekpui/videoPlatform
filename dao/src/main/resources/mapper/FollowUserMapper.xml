@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hezb.mapper.FollowUserMapper">
+    <select id="getFollowUserInfo" resultType="com.hezb.model.FollowUserInfo">
+        select
+            follow_group.name as groupName,
+            user.id as userId,
+            user.phone,
+            user.email,
+            user_info.nick_name,
+            user_info.avatar,
+            user_info.sign,
+            user_info.gender,
+            user_info.birth
+        from
+            follow_user
+        left join user on follow_user.follow_user_id = user.id
+        left join user_info on follow_user.follow_user_id = user_info.user_id
+        left join follow_group on follow_user.group_id = follow_group.id
+        <where>
+            follow_user.user_id = #{userId,jdbcType=BIGINT}
+        </where>
+    </select>
+
+    <select id="getFanUserInfo" resultType="com.hezb.model.FanUserInfo">
+        select
+            user.id as userId,
+            user.phone,
+            user.email,
+            user_info.nick_name,
+            user_info.avatar,
+            user_info.sign,
+            user_info.gender,
+            user_info.birth
+        from
+            follow_user
+        left join user on follow_user.user_id = user.id
+        left join user_info on follow_user.follow_user_id = user_info.user_id
+        <where>
+            follow_user.follow_user_id = #{followUserId,jdbcType=BIGINT}
+        </where>
+    </select>
+</mapper>

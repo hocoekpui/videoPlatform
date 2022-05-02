@@ -76,6 +76,7 @@ public class UserService {
     public QueryUserResponse getUserInfo(Long userId) {
         /*根据用户编号查询用户基础信息*/
         User user = userMapper.selectById(userId);
+        UserExceptionEnum.USER_NOT_EXIST.assertTrue(user != null);
         QueryUserResponse userResponse = QueryUserResponse.builder().userId(user.getId()).phone(user.getPhone()).email(user.getEmail()).build();
         /*根据用户编号查询用户详情信息*/
         List<UserInfo> userInfoList = userInfoMapper.selectList(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userId));

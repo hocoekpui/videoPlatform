@@ -9,7 +9,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoUpdateRequest {
+public class FanUserInfoResponse {
+
+    /**
+     * 注册手机号码
+     */
+    private String phone;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     /**
      * 昵称
@@ -35,4 +45,9 @@ public class UserInfoUpdateRequest {
      * 生日
      */
     private String birth;
+
+    /**
+     * 是否互相关注
+     */
+    private Boolean followEachOther;
 }
