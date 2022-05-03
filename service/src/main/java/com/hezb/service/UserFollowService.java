@@ -2,8 +2,10 @@ package com.hezb.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hezb.domain.FollowUser;
+import com.hezb.exception.enums.FollowExceptionEnum;
 import com.hezb.mapper.FollowUserMapper;
 import com.hezb.model.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ public class UserFollowService {
 
     @Transactional
     public int followUser(Long userId, FollowUserRequest request) {
+        /*检测是否关注自己*/
+        FollowExceptionEnum.FOLLOW_YOURSELF.assertTrue(userId.compareTo(request.getFollowUserId()) != 0);
         /*检查用户编号合法性*/
         userService.getUserInfo(userId);
         userService.getUserInfo(request.getFollowUserId());

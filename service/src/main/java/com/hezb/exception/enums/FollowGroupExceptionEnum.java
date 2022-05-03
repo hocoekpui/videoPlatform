@@ -4,9 +4,9 @@ import com.hezb.exception.BaseException;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum FollowExceptionEnum implements BaseException {
+public enum FollowGroupExceptionEnum implements BaseException {
 
-    FOLLOW_YOURSELF("30000", "不能够关注自己哦"),
+    FOLLOW_GROUP_EXIST("40000", "分组已存在"),
     ;
 
     private final String errorCode;
