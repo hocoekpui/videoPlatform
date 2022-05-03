@@ -46,4 +46,10 @@ public class UserController {
         Long userId = userSupport.getCurrentUserId();
         return CommonResponse.success(userService.updateUserInfo(userId, request));
     }
+
+    @GetMapping("/getUserInfoList")
+    public CommonResponse<PageResult<UserQueryResponse>> getUserInfoList(@Valid UserQueryRequest request) {
+        Long userId = userSupport.getCurrentUserId();
+        return CommonResponse.success(userService.getUserInfoList(userId, request));
+    }
 }

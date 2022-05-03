@@ -2,16 +2,16 @@ package com.hezb.service;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hezb.constant.UserConstant;
 import com.hezb.domain.User;
 import com.hezb.domain.UserInfo;
 import com.hezb.exception.enums.UserExceptionEnum;
+import com.hezb.mapper.FollowUserMapper;
 import com.hezb.mapper.UserInfoMapper;
 import com.hezb.mapper.UserMapper;
-import com.hezb.model.QueryUserResponse;
-import com.hezb.model.RegisterUserRequest;
-import com.hezb.model.UserInfoUpdateRequest;
-import com.hezb.model.UserLoginRequest;
+import com.hezb.model.*;
 import com.hezb.util.MD5Util;
 import com.hezb.util.RSAUtil;
 import com.hezb.util.TokenUtil;
@@ -20,19 +20,23 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserMapper userMapper;
     private final UserInfoMapper userInfoMapper;
+    private final FollowUserMapper followUserMapper;
 
-    public UserService(UserMapper userMapper, UserInfoMapper userInfoMapper) {
+    public UserService(UserMapper userMapper, UserInfoMapper userInfoMapper, FollowUserMapper followUserMapper) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
+        this.followUserMapper = followUserMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -96,5 +100,20 @@ public class UserService {
                 .set(StringUtils.isNotBlank(request.getGender()), UserInfo::getGender, request.getGender())
                 .set(StringUtils.isNotBlank(request.getBirth()), UserInfo::getBirth, request.getBirth())
                 .set(UserInfo::getUpdateTime, new Date()));
+    }
+
+    public PageResult<UserQueryResponse> getUserInfoList(Long userId, UserQueryRequest request) {
+        /*关注用户信息列表*/
+        List<UserQueryResponse> responses = new ArrayList<>();
+        PageHelper.startPage(request.getPageNo(), request.getPageSize());
+        PageInfo<UserInfo> userInfoList = PageInfo.of(userInfoMapper.selectList(Wrappers.<UserInfo>lambdaQuery().like(StringUtils.isNotBlank(request.getNickName()), UserInfo::getNickName, request.getNickName()).orderByAsc(UserInfo::getUserId)));
+        List<Long> followUserIdList = followUserMapper.getFollowUserInfo(userId).stream().map(FollowUserInfo::getUserId).collect(Collectors.toList());
+        userInfoList.getList().stream().forEach(userInfo -> {
+            UserQueryResponse userQueryResponse = UserQueryResponse.builder().build();
+            BeanUtils.copyProperties(userInfo, userQueryResponse);
+            userQueryResponse.setFollowed(followUserIdList.contains(userInfo.getUserId()) ? true : false);
+            responses.add(userQueryResponse);
+        });
+        return new PageResult(userInfoList.getTotal(), responses);
     }
 }
