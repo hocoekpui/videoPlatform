@@ -12,6 +12,11 @@ import lombok.NoArgsConstructor;
 public class FanUserInfoResponse {
 
     /**
+     * 用户编号
+     */
+    private Long userId;
+
+    /**
      * 注册手机号码
      */
     private String phone;

@@ -25,7 +25,7 @@ public class UserFollowService {
     }
 
     @Transactional
-    public int followUser(Long userId, FollowUserRequest request) {
+    public Integer followUser(Long userId, FollowUserRequest request) {
         /*检测是否关注自己*/
         FollowExceptionEnum.FOLLOW_YOURSELF.assertTrue(userId.compareTo(request.getFollowUserId()) != 0);
         /*检查用户编号合法性*/
@@ -37,7 +37,7 @@ public class UserFollowService {
         return followUserMapper.insert(FollowUser.builder().userId(userId).followUserId(request.getFollowUserId()).groupId(request.getGroupId()).createTime(new Date()).build());
     }
 
-    public int unFollowUser(Long userId, UnFollowUserRequest request) {
+    public Integer unFollowUser(Long userId, UnFollowUserRequest request) {
         /*删除存量关注记录*/
         return followUserMapper.delete(Wrappers.<FollowUser>lambdaQuery().eq(FollowUser::getUserId, userId).eq(FollowUser::getFollowUserId, request.getFollowUserId()));
     }

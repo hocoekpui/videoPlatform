@@ -91,7 +91,7 @@ public class UserService {
         return userResponse;
     }
 
-    public int updateUserInfo(Long userId, UserInfoUpdateRequest request) {
+    public Integer updateUserInfo(Long userId, UserInfoUpdateRequest request) {
         /*根据用户编号更新用户详情信息*/
         return userInfoMapper.update(null, Wrappers.<UserInfo>lambdaUpdate().eq(UserInfo::getUserId, userId)
                 .set(StringUtils.isNotBlank(request.getNickName()), UserInfo::getNickName, request.getNickName())
