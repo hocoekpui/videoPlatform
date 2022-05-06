@@ -1,4 +1,4 @@
-package com.hezb.model;
+package com.hezb.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,22 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FanUserInfo {
-
-    /**
-     * 注册手机号码
-     */
-    private String phone;
-
-    /**
-     * 用户编号
-     */
-    private Long userId;
-
-    /**
-     * 邮箱
-     */
-    private String email;
+public class UserInfoUpdateRequest {
 
     /**
      * 昵称

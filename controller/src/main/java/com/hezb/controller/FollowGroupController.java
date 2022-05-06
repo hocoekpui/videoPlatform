@@ -1,8 +1,8 @@
 package com.hezb.controller;
 
 import com.hezb.domain.FollowGroup;
-import com.hezb.model.AddFollowGroupRequest;
-import com.hezb.model.CommonResponse;
+import com.hezb.pojo.AddFollowGroupRequest;
+import com.hezb.pojo.CommonResponse;
 import com.hezb.service.FollowGroupService;
 import com.hezb.support.UserSupport;
 import org.springframework.web.bind.annotation.*;

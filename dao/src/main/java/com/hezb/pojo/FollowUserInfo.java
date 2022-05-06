@@ -1,4 +1,4 @@
-package com.hezb.model;
+package com.hezb.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FanUserInfoResponse {
+public class FollowUserInfo {
+
+    /**
+     * 分组名称
+     */
+    private String groupName;
 
     /**
      * 用户编号
@@ -50,9 +55,4 @@ public class FanUserInfoResponse {
      * 生日
      */
     private String birth;
-
-    /**
-     * 是否互相关注
-     */
-    private Boolean followEachOther;
 }

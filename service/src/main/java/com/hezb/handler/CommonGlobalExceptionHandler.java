@@ -2,7 +2,7 @@ package com.hezb.handler;
 
 import com.hezb.exception.CustomizeException;
 import com.hezb.exception.enums.BaseExceptionEnum;
-import com.hezb.model.CommonResponse;
+import com.hezb.pojo.CommonResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

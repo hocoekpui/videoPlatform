@@ -11,7 +11,7 @@ import com.hezb.exception.enums.UserExceptionEnum;
 import com.hezb.mapper.FollowUserMapper;
 import com.hezb.mapper.UserInfoMapper;
 import com.hezb.mapper.UserMapper;
-import com.hezb.model.*;
+import com.hezb.pojo.*;
 import com.hezb.util.MD5Util;
 import com.hezb.util.RSAUtil;
 import com.hezb.util.TokenUtil;

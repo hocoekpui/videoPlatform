@@ -1,4 +1,4 @@
-package com.hezb.model;
+package com.hezb.pojo;
 
 import com.hezb.exception.enums.BaseExceptionEnum;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.hezb.controller;
 
-import com.hezb.model.*;
+import com.hezb.pojo.*;
 import com.hezb.service.UserFollowService;
 import com.hezb.support.UserSupport;
 import org.springframework.web.bind.annotation.*;

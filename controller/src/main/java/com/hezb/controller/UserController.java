@@ -1,6 +1,6 @@
 package com.hezb.controller;
 
-import com.hezb.model.*;
+import com.hezb.pojo.*;
 import com.hezb.service.UserService;
 import com.hezb.support.UserSupport;
 import com.hezb.util.RSAUtil;

@@ -5,7 +5,7 @@ import com.hezb.constant.FollowGroupConstant;
 import com.hezb.domain.FollowGroup;
 import com.hezb.exception.enums.FollowGroupExceptionEnum;
 import com.hezb.mapper.FollowGroupMapper;
-import com.hezb.model.AddFollowGroupRequest;
+import com.hezb.pojo.AddFollowGroupRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

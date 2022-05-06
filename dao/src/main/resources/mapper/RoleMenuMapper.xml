@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hezb.mapper.RoleMenuMapper">
+    <resultMap id="menuResultMap" type="com.hezb.pojo.RoleMenuInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="menu_id" jdbcType="INTEGER" property="menuId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+    </resultMap>
+
+    <select id="getMenuByRoleId" resultMap="menuResultMap">
+        select role_menu.id,
+               role_menu.role_id,
+               role_menu.menu_id,
+               menu.code,
+               menu.name
+        from
+            role_menu
+        left join
+             menu on role_menu.menu_id = menu.id
+        where
+            role_menu.role_id in
+        <foreach collection="roleIdList" item="roleId" index="index" open="(" close=")" separator=",">
+            #{roleId,jdbcType=BIGINT}
+        </foreach>
+    </select>
+</mapper>

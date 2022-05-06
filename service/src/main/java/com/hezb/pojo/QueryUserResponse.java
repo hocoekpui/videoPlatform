@@ -1,4 +1,4 @@
-package com.hezb.model;
+package com.hezb.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoUpdateRequest {
+public class QueryUserResponse {
+
+    /**
+     * 用户编号
+     */
+    private Long userId;
+
+    /**
+     * 手机号
+     */
+    private String phone;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     /**
      * 昵称

@@ -3,9 +3,10 @@ package com.hezb.service;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hezb.domain.FollowUser;
 import com.hezb.exception.enums.FollowExceptionEnum;
+import com.hezb.exception.enums.UserExceptionEnum;
 import com.hezb.mapper.FollowUserMapper;
-import com.hezb.model.*;
-import org.apache.commons.lang3.StringUtils;
+import com.hezb.mapper.UserMapper;
+import com.hezb.pojo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +18,11 @@ import java.util.stream.Collectors;
 public class UserFollowService {
 
     private final FollowUserMapper followUserMapper;
-    private final UserService userService;
+    private final UserMapper userMapper;
 
-    public UserFollowService(FollowUserMapper followUserMapper, UserService userService) {
+    public UserFollowService(FollowUserMapper followUserMapper, UserMapper userMapper) {
         this.followUserMapper = followUserMapper;
-        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Transactional
@@ -29,8 +30,8 @@ public class UserFollowService {
         /*检测是否关注自己*/
         FollowExceptionEnum.FOLLOW_YOURSELF.assertTrue(userId.compareTo(request.getFollowUserId()) != 0);
         /*检查用户编号合法性*/
-        userService.getUserInfo(userId);
-        userService.getUserInfo(request.getFollowUserId());
+        UserExceptionEnum.USER_NOT_EXIST.assertTrue(userMapper.selectById(userId) != null);
+        UserExceptionEnum.USER_NOT_EXIST.assertTrue(userMapper.selectById(request.getFollowUserId()) != null);
         /*删除存量关注记录*/
         followUserMapper.delete(Wrappers.<FollowUser>lambdaQuery().eq(FollowUser::getUserId, userId).eq(FollowUser::getFollowUserId, request.getFollowUserId()));
         /*新增关注记录*/

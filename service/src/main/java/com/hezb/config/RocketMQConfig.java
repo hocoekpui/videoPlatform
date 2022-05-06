@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hezb.constant.UserMomentConstant;
 import com.hezb.domain.UserMoment;
-import com.hezb.model.FanUserInfoResponse;
+import com.hezb.pojo.FanUserInfoResponse;
 import com.hezb.service.UserFollowService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

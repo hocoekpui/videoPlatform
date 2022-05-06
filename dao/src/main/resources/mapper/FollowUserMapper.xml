@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hezb.mapper.FollowUserMapper">
-    <select id="getFollowUserInfo" resultType="com.hezb.model.FollowUserInfo">
+    <select id="getFollowUserInfo" resultType="com.hezb.pojo.FollowUserInfo">
         select
             follow_group.name as groupName,
             user.id as userId,
@@ -22,7 +22,7 @@
         </where>
     </select>
 
-    <select id="getFanUserInfo" resultType="com.hezb.model.FanUserInfo">
+    <select id="getFanUserInfo" resultType="com.hezb.pojo.FanUserInfo">
         select
             user.id as userId,
             user.phone,

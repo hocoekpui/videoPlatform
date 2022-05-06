@@ -1,8 +1,10 @@
 package com.hezb.controller;
 
+import com.hezb.annotation.ApiLimitedRole;
+import com.hezb.constant.RoleCodeConstant;
 import com.hezb.domain.UserMoment;
-import com.hezb.model.CommonResponse;
-import com.hezb.model.UserMomentReleaseRequest;
+import com.hezb.pojo.CommonResponse;
+import com.hezb.pojo.UserMomentReleaseRequest;
 import com.hezb.service.UserMomentService;
 import com.hezb.support.UserSupport;
 import org.apache.rocketmq.client.exception.MQBrokerException;
@@ -25,6 +27,7 @@ public class UserMomentController {
         this.userMomentService = userMomentService;
     }
 
+    @ApiLimitedRole(roleCodeList = {RoleCodeConstant.Lv0})
     @PostMapping("/releaseMoment")
     public CommonResponse<Long> releaseMoment(@RequestBody @Valid UserMomentReleaseRequest request) throws MQBrokerException, RemotingException, InterruptedException, MQClientException {
         Long userId = userSupport.getCurrentUserId();

@@ -1,4 +1,4 @@
-package com.hezb.model;
+package com.hezb.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UnFollowUserRequest {
+public class AddFollowGroupRequest {
 
     /**
-     * 被取消关注人编号
+     * 关注组名称
      */
-    @NotNull(message = "被取消关注人编号不能为空")
-    private Long followUserId;
+    @NotNull(message = "关注组名称不能为空")
+    private String name;
 }

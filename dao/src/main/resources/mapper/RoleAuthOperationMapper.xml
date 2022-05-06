@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hezb.mapper.RoleAuthOperationMapper">
+    <resultMap id="authOperationResultMap" type="com.hezb.pojo.RoleAuthOperationInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="element_operation_id" jdbcType="INTEGER" property="elementOperationId"/>
+        <result column="element_name" jdbcType="VARCHAR" property="elementName"/>
+        <result column="element_code" jdbcType="VARCHAR" property="elementCode"/>
+        <result column="operation_type" jdbcType="VARCHAR" property="operationType"/>
+    </resultMap>
+
+    <select id="getAuthOperationByRoleId" resultMap="authOperationResultMap">
+        select role_auth_operation.id,
+               role_auth_operation.role_id,
+               role_auth_operation.element_operation_id,
+               auth_operation.element_name,
+               auth_operation.element_code,
+               auth_operation.operation_type
+        from
+            role_auth_operation
+        left join
+            auth_operation on role_auth_operation.element_operation_id = auth_operation.id
+        where
+            role_auth_operation.role_id in
+        <foreach collection="roleIdList" item="roleId" index="index" open="(" close=")" separator=",">
+            #{roleId,jdbcType=BIGINT}
+        </foreach>
+    </select>
+</mapper>
