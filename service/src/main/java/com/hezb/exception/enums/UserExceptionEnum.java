@@ -11,6 +11,7 @@ public enum UserExceptionEnum implements BaseException {
     USER_NOT_EXIST("20002", "用户信息不存在"),
     PASSWORD_NOT_CORRECT("20003", "用户密码不正确"),
     USER_TOKEN_EXCEED("20004", "用户身份认证信息过期"),
+    ILLEGAL_REFRESH_TOKEN("20005", "非法用户身份认证信息"),
     ;
 
     private final String errorCode;

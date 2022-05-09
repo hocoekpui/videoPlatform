@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hezb.constant.UserConstant;
+import com.hezb.domain.RefreshToken;
 import com.hezb.domain.User;
 import com.hezb.domain.UserInfo;
 import com.hezb.exception.enums.UserExceptionEnum;
 import com.hezb.mapper.FollowUserMapper;
+import com.hezb.mapper.RefreshTokenMapper;
 import com.hezb.mapper.UserInfoMapper;
 import com.hezb.mapper.UserMapper;
 import com.hezb.pojo.*;
@@ -32,13 +34,15 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserInfoMapper userInfoMapper;
     private final FollowUserMapper followUserMapper;
+    private final RefreshTokenMapper refreshTokenMapper;
     private final UserAuthService userAuthService;
 
-    public UserService(UserMapper userMapper, UserInfoMapper userInfoMapper, FollowUserMapper followUserMapper, UserAuthService userAuthService) {
+    public UserService(UserMapper userMapper, UserInfoMapper userInfoMapper, FollowUserMapper followUserMapper, UserAuthService userAuthService, RefreshTokenMapper refreshTokenMapper) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.followUserMapper = followUserMapper;
         this.userAuthService = userAuthService;
+        this.refreshTokenMapper = refreshTokenMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -64,7 +68,8 @@ public class UserService {
         return user.getId();
     }
 
-    public String login(UserLoginRequest request) throws Exception {
+    @Transactional
+    public UserLoginResponse login(UserLoginRequest request) throws Exception {
         /*判断注册手机号是否存在*/
         List<User> userList = userMapper.selectList(Wrappers.<User>lambdaQuery().eq(User::getPhone, request.getPhone()));
         UserExceptionEnum.PHONE_NOT_EXIST.assertTrue(CollectionUtils.isNotEmpty(userList));
@@ -77,8 +82,14 @@ public class UserService {
         String rawPassword = RSAUtil.decrypt(password);
         String md5Password = MD5Util.sign(rawPassword, salt, "UTF-8");
         UserExceptionEnum.PASSWORD_NOT_CORRECT.assertTrue(StringUtils.equals(md5Password, user.getPassword()));
+        /*生成令牌信息*/
+        String accessToken = TokenUtil.generateToken(user.getId());
+        String refreshToken = TokenUtil.generateRefreshToken(user.getId());
+        /*删除刷新令牌信息*/
+        refreshTokenMapper.delete(Wrappers.<RefreshToken>lambdaQuery().eq(RefreshToken::getUserId, user.getId()));
+        refreshTokenMapper.insert(RefreshToken.builder().userId(user.getId()).refreshToken(refreshToken).createTime(new Date()).build());
         /*返回令牌信息*/
-        return TokenUtil.generateToken(user.getId());
+        return UserLoginResponse.builder().token(accessToken).refreshToken(refreshToken).build();
     }
 
     public QueryUserResponse getUserInfo(Long userId) {
@@ -119,5 +130,15 @@ public class UserService {
             responses.add(userQueryResponse);
         });
         return new PageResult(userInfoList.getTotal(), responses);
+    }
+
+    public Integer logout(Long userId, String refreshToken) {
+        return refreshTokenMapper.delete(Wrappers.<RefreshToken>lambdaQuery().eq(RefreshToken::getUserId, userId).eq(RefreshToken::getRefreshToken, refreshToken));
+    }
+
+    public String refreshToken(String refreshToken) throws Exception {
+        List<RefreshToken> refreshTokenList = refreshTokenMapper.selectList(Wrappers.<RefreshToken>lambdaQuery().eq(RefreshToken::getRefreshToken, refreshToken));
+        UserExceptionEnum.ILLEGAL_REFRESH_TOKEN.assertTrue(CollectionUtils.isNotEmpty(refreshTokenList));
+        return TokenUtil.generateToken(TokenUtil.verifyToken(refreshToken));
     }
 }

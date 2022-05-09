@@ -31,8 +31,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public CommonResponse<String> login(@RequestBody @Valid UserLoginRequest request) throws Exception {
+    public CommonResponse<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest request) throws Exception {
         return CommonResponse.success(userService.login(request));
+    }
+
+    @PostMapping("/logout")
+    public CommonResponse<Integer> logout(@RequestHeader String refreshToken) {
+        Long userId = userSupport.getCurrentUserId();
+        return CommonResponse.success(userService.logout(userId, refreshToken));
+    }
+
+    @PostMapping("/refreshToken")
+    public CommonResponse<String> refreshToken(@RequestHeader String refreshToken) throws Exception {
+        return CommonResponse.success(userService.refreshToken(refreshToken));
     }
 
     @GetMapping("/getUserInfo")
