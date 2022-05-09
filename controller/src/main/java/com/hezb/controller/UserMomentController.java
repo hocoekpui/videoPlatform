@@ -1,5 +1,6 @@
 package com.hezb.controller;
 
+import com.hezb.annotation.ApiLimitedData;
 import com.hezb.annotation.ApiLimitedRole;
 import com.hezb.constant.RoleCodeConstant;
 import com.hezb.domain.UserMoment;
@@ -28,6 +29,7 @@ public class UserMomentController {
     }
 
     @ApiLimitedRole(roleCodeList = {RoleCodeConstant.Lv0})
+    @ApiLimitedData
     @PostMapping("/releaseMoment")
     public CommonResponse<Long> releaseMoment(@RequestBody @Valid UserMomentReleaseRequest request) throws MQBrokerException, RemotingException, InterruptedException, MQClientException {
         Long userId = userSupport.getCurrentUserId();
@@ -39,5 +41,4 @@ public class UserMomentController {
         Long userId = userSupport.getCurrentUserId();
         return CommonResponse.success(userMomentService.getSubscribedMoment(userId));
     }
-
 }

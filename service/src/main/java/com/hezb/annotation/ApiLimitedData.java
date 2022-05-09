@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 @Component
-public @interface ApiLimitedRole {
-    String[] roleCodeList() default {};
+public @interface ApiLimitedData {
+
 }

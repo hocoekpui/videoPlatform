@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
-public class ApiAspect {
+public class ApiLimitedRoleAspect {
 
     private final UserSupport userSupport;
 
     private final UserRoleMapper userRoleMapper;
 
-    public ApiAspect(UserSupport userSupport, UserRoleMapper userRoleMapper) {
+    public ApiLimitedRoleAspect(UserSupport userSupport, UserRoleMapper userRoleMapper) {
         this.userSupport = userSupport;
         this.userRoleMapper = userRoleMapper;
     }

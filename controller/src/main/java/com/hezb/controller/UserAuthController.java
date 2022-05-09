@@ -1,9 +1,12 @@
 package com.hezb.controller;
 
-import com.hezb.pojo.*;
+import com.hezb.pojo.CommonResponse;
+import com.hezb.pojo.UserAuthResponse;
 import com.hezb.service.UserAuthService;
 import com.hezb.support.UserSupport;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
