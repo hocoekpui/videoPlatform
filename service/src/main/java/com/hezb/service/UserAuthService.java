@@ -1,6 +1,7 @@
 package com.hezb.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.hezb.constant.RoleCodeConstant;
 import com.hezb.domain.UserRole;
 import com.hezb.mapper.RoleAuthOperationMapper;
 import com.hezb.mapper.RoleMenuMapper;
@@ -10,6 +11,7 @@ import com.hezb.pojo.RoleMenuInfo;
 import com.hezb.pojo.UserAuthResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,5 +33,9 @@ public class UserAuthService {
         List<RoleAuthOperationInfo> roleAuthOperationInfoList = roleAuthOperationMapper.getAuthOperationInfoByRoleId(roleIdList);
         List<RoleMenuInfo> roleMenuInfoList = roleMenuMapper.getMenuByRoleId(roleIdList);
         return UserAuthResponse.builder().roleAuthOperationList(roleAuthOperationInfoList).roleMenuList(roleMenuInfoList).build();
+    }
+
+    public Integer addDefaultRole(Long userId) {
+        return userRoleMapper.insert(UserRole.builder().userId(userId).roleId(RoleCodeConstant.DEFAULT_ROLE_ID).createTime(new Date()).build());
     }
 }

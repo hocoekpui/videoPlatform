@@ -32,11 +32,13 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserInfoMapper userInfoMapper;
     private final FollowUserMapper followUserMapper;
+    private final UserAuthService userAuthService;
 
-    public UserService(UserMapper userMapper, UserInfoMapper userInfoMapper, FollowUserMapper followUserMapper) {
+    public UserService(UserMapper userMapper, UserInfoMapper userInfoMapper, FollowUserMapper followUserMapper, UserAuthService userAuthService) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.followUserMapper = followUserMapper;
+        this.userAuthService = userAuthService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -57,6 +59,8 @@ public class UserService {
         /*新增用户信息*/
         UserInfo userInfo = UserInfo.builder().userId(user.getId()).nickName(UserConstant.DEFAULT_NICK_NAME).birth(UserConstant.DEFAULT_BIRTHDAY).gender(UserConstant.GENDER_UNKNOWN).createTime(now).build();
         userInfoMapper.insert(userInfo);
+        /*新增默认角色*/
+        userAuthService.addDefaultRole(userInfo.getUserId());
         return user.getId();
     }
 
